@@ -20,11 +20,11 @@ public class TrumpTweetParody {
    * @param args the command line arguments
    */
   public static void main(String[] args) {
-    ///*
+   /*
     tweetGenerator Bing = new tweetGenerator();
     Bing.generateIamge();
     //*/
-    /*
+    ///*
     Dashboard Bong = new Dashboard();
     Bong.initComponents();
     //*/

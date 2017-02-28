@@ -10,22 +10,25 @@ package trumptweetparody;
  * @author Zarathustra aka Kevin aka Konnoke
  */
 public class Tweet {
+  
 
-  int width, height, likes, replies, retweet;
+  int width, height, likes, replies, retweet, type;
   String text, date;
   final int bigWidth = 640;
-  final int bigHeight = 375;
+  final int bigHeight = 275;
   final int normalWidth = 600;
   final int normalHeight = 135;
 
   public void setNormalTweet() {
     width = normalWidth;
     height = normalHeight;
+    type = 0;
   }
 
   public void setBigTweet() {
     width = bigWidth;
     height = bigHeight;
+    type = 1;
   }
 
   public void setWidth(int width) {
@@ -82,6 +85,10 @@ public class Tweet {
 
   public String getDate() {
     return date;
+  }
+  
+  public int getType(){
+    return type;
   }
 
 }

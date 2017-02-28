@@ -7,17 +7,22 @@ package trumptweetparody;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.FileReader;
 import java.util.Random;
+import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -30,14 +35,14 @@ import javax.swing.table.DefaultTableModel;
 public class Dashboard extends JFrame {
 
   private static final int FRAME_WIDTH = 900;
-  private static final int FRAME_HEIGHT = 400;
-
+  private static final int FRAME_HEIGHT = 500;
   public void Dashboard() {
     //initComponents();
   }
 
-  public void initComponents() {
-
+  public static void initComponents() {
+    
+    final Tweet fakeTweet = new Tweet();
     final JFrame frame = new JFrame();
     final JPanel buttonPanel = new JPanel();
     frame.add(buttonPanel);
@@ -45,28 +50,21 @@ public class Dashboard extends JFrame {
 
     // Set up Add button and its location
     final JButton buttonAdd = new JButton(" Add ");
-    buttonAdd.setBounds(50, 325, 100, 20);
+    buttonAdd.setBounds(50, 425, 100, 20);
     buttonPanel.add(buttonAdd);
     ///* Set up Generate Tweet Button
-    final JButton buttonRandom = new JButton("Generate Tweet");
-    buttonRandom.setBounds(40, 200, 200, 20);
-    buttonPanel.add(buttonRandom);
+    final JButton buttonGenerate = new JButton("Generate Tweet");
+    buttonGenerate.setBounds(40, 385, 200, 20);
+    buttonPanel.add(buttonGenerate);
 
     // Set up Exit button and its location
     final JButton buttonExit = new JButton("Exit");
-    buttonExit.setBounds(200, 325, 100, 20);
+    buttonExit.setBounds(200, 425, 100, 20);
     buttonPanel.add(buttonExit);
-
-    buttonExit.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-
-        System.exit(0);
-      }
-    });
+    
 
     // Set up Labels for Tweet text, date, and pay rate
-    final JLabel labelTweetText = new JLabel("Enter tweet Text: ");
+    final JLabel labelTweetText = new JLabel("Enter Tweet Text: ");
     labelTweetText.setBounds(20, 5, 150, 100);
     buttonPanel.add(labelTweetText);
 
@@ -77,7 +75,17 @@ public class Dashboard extends JFrame {
     final JLabel labelLike = new JLabel("Enter number of likes");
     labelLike.setBounds(20, 115, 150, 100);
     buttonPanel.add(labelLike);
-
+///*
+    final JLabel labelRetweet = new JLabel("Enter number of retweets");
+    labelRetweet.setBounds(20, 165, 150, 100);
+    buttonPanel.add(labelRetweet);
+    
+    final JLabel labelReply = new JLabel("Enter number of replies");
+    labelReply.setBounds(20, 215, 150, 100);
+    buttonPanel.add(labelReply);
+  //*/  
+    
+    
     // Set up textboxes for all expected inputs
     final JTextField textTweetText = new JTextField();
     textTweetText.setBounds(180, 40, 100, 25);
@@ -91,6 +99,79 @@ public class Dashboard extends JFrame {
     textLike.setBounds(180, 150, 100, 25);
     buttonPanel.add(textLike);
 
+    final JTextField textRetweet = new JTextField();
+    textRetweet.setBounds(180, 205, 100, 25);
+    buttonPanel.add(textRetweet);
+    
+    final JTextField textReply = new JTextField();
+    textReply.setBounds(180, 260, 100, 25);
+    buttonPanel.add(textReply);
+    
+    JRadioButton normalTweetButton = new JRadioButton("Normal Size Tweet");
+    normalTweetButton.setMnemonic(KeyEvent.VK_C);
+    //normalTweetButton.setActionCommand("Normal Size Tweet");
+    normalTweetButton.setBounds(15, 300, 200, 25);
+    buttonPanel.add(normalTweetButton);
+    
+    JRadioButton bigTweetButton = new JRadioButton("Big Size Tweet");
+    bigTweetButton.setMnemonic(KeyEvent.VK_C);
+    //bigTweetButton.setActionCommand("Big Size Tweet");
+    bigTweetButton.setBounds(15, 325, 200, 25);
+    buttonPanel.add(bigTweetButton);
+    ///*
+    ButtonGroup group = new ButtonGroup();
+    group.add(normalTweetButton);
+    group.add(bigTweetButton);
+    //*/
+    
+    
+    normalTweetButton.addActionListener(new ActionListener(){
+      @Override
+      public void actionPerformed(ActionEvent e){
+        fakeTweet.setNormalTweet();
+        System.out.println(fakeTweet.getType());
+      }
+    });
+    
+    bigTweetButton.addActionListener(new ActionListener(){
+      @Override
+      public void actionPerformed(ActionEvent e){
+        fakeTweet.setBigTweet();
+        System.out.println(fakeTweet.getType());
+      }
+    });
+    
+    buttonGenerate.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        fakeTweet.setNormalTweet();
+        ///*
+        fakeTweet.setText(textTweetText.getText());
+        fakeTweet.setDate(textDate.getText());
+        //fakeTweet.setLikes(Integer.parseInt(textLike.getText()));
+        //fakeTweet.setRetweet(Integer.parseInt(textRetweet.getText()));
+        //fakeTweet.setReplies(Integer.parseInt(textReply.getText()));
+        //*/
+        tweetGenerator Bing = new tweetGenerator(fakeTweet);
+        Bing.generateImage();
+        ///*
+        BufferedImage displayTweet = Bing.getImage();
+        ImageIcon image = new ImageIcon(displayTweet);
+        JLabel tweetPreview = new JLabel(image);
+        tweetPreview.setBounds(400, 20, fakeTweet.getWidth(), fakeTweet.getHeight());
+        buttonPanel.add(tweetPreview);
+        //*/      
+    }
+    });
+
+    buttonExit.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+
+        System.exit(0);
+      }
+    });
+    
     frame.setSize(FRAME_WIDTH, FRAME_HEIGHT);
     frame.setTitle("Dashboard");
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -99,5 +180,8 @@ public class Dashboard extends JFrame {
     frame.setLocationRelativeTo(null);
 
   }
+  
+  
+  
 
 }
