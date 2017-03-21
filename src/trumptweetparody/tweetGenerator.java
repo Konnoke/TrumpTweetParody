@@ -12,6 +12,7 @@ import static java.awt.image.BufferedImage.TYPE_CUSTOM;
 import static java.awt.image.BufferedImage.TYPE_INT_BGR;
 import java.io.File;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.Scanner;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -27,15 +28,34 @@ public class tweetGenerator {
 
   //String tweetText = "";
   BufferedImage imageTweet;
-  Tweet fakeTweet;
+  static Tweet fakeTweet;
 
   public tweetGenerator(Tweet sprint2) {
     fakeTweet = sprint2;
+    System.out.println("Constructor: "+fakeTweet.getType());
+  }
+
+  public static String formatNumberExample(Number number) {
+    char[] suffix = {' ', 'k', 'M', 'B', 'T', 'P', 'E'};
+    long numValue = number.longValue();
+    int value = (int) Math.floor(Math.log10(numValue));
+    int base = value / 3;
+    if (value >= 3 && base < suffix.length) {
+      return new DecimalFormat("~#0.0").format(numValue / Math.pow(10, base * 3)) + suffix[base];
+    } else {
+      return new DecimalFormat("#,##0").format(numValue);
+    }
   }
 
   public void generateImage() {
     BufferedImage trumpPic = null;
+    BufferedImage trumpNameBig = null;
     BufferedImage trumpName = null;
+    BufferedImage likes = null;
+    BufferedImage replies = null;
+    BufferedImage retweet = null;
+    
+    
     /*
     Scanner scan = new Scanner(System.in);
     System.out.println("Please enter in the customized Tweet text (140 characters): ");
@@ -47,26 +67,48 @@ public class tweetGenerator {
     //getClass().getClassLoader().getResourceAsStream(path)
     try {
       trumpPic = ImageIO.read(getClass().getResourceAsStream("/images/TrumpPic.jpg"));
+      trumpNameBig = ImageIO.read(getClass().getResourceAsStream("/images/trumpNameBig.jpg"));
       trumpName = ImageIO.read(getClass().getResourceAsStream("/images/TrumpNameV.jpg"));
+      likes = ImageIO.read(getClass().getResourceAsStream("/images/like.jpg"));
+      replies = ImageIO.read(getClass().getResourceAsStream("/images/reply.jpg"));
+      retweet = ImageIO.read(getClass().getResourceAsStream("/images/retweet.jpg"));
+      
+      
+      
     } catch (IOException e) {
     }
 
-    System.out.println(fakeTweet.getType());
-                                                                                        fakeTweet.setBigTweet();
+    //System.out.println(fakeTweet.getType());
+    //fakeTweet.setBigTweet();
+    //System.out.println(fakeTweet.getType());
     //type 0 is normal size tweet
+    
+    fakeTweet.setStringLike();
+    fakeTweet.setStringReply();
+    fakeTweet.setStringRetweet();
+    
     if (fakeTweet.getType() == 0) {
-      imageTweet = new BufferedImage(fakeTweet.width, fakeTweet.height, TYPE_INT_BGR);
+      imageTweet = new BufferedImage(fakeTweet.normalWidth, fakeTweet.normalHeight, TYPE_INT_BGR);
       Graphics2D g2 = imageTweet.createGraphics();
       g2.setPaint(new Color(255, 255, 255));
-      g2.fillRect(0, 0, fakeTweet.width, fakeTweet.height);
+      g2.fillRect(0, 0, fakeTweet.normalWidth, fakeTweet.normalHeight);
       g2.drawImage(trumpPic, 15, 15, null);
       g2.drawImage(trumpName, 105, 15, null);
+      
+      g2.drawImage(replies, 30, 100, null);
+      g2.drawImage(retweet, 130, 100, null);
+      g2.drawImage(likes, 230, 100, null);
+      
       g2.setPaint(Color.black);
       g2.setFont(new Font("Helvetica Neue", Font.PLAIN, 14)); //"Arial" "Helvetica Neue"
       g2.drawString(fakeTweet.text, 110, 50);
+      
       g2.setFont(new Font("Helvetica", Font.PLAIN, 13));
       g2.setColor(Color.GRAY);
       g2.drawString(fakeTweet.date, 360, 30);
+      g2.drawString(fakeTweet.stringReply, 70, 115);
+      g2.drawString(fakeTweet.stringRetweet, 170, 115);
+      g2.drawString(fakeTweet.stringLikes, 260, 115);
       g2.dispose();
       try {
         ImageIO.write(imageTweet, "png", new File("Tweet.png"));
@@ -76,18 +118,29 @@ public class tweetGenerator {
     }
     //type 1 is big size tweet
     if (fakeTweet.getType() == 1) {
-      imageTweet = new BufferedImage(fakeTweet.width, fakeTweet.height, TYPE_INT_BGR);
+      imageTweet = new BufferedImage(fakeTweet.bigWidth, fakeTweet.bigHeight, TYPE_INT_BGR);
       Graphics2D g2 = imageTweet.createGraphics();
       g2.setPaint(new Color(255, 255, 255));
       g2.fillRect(0, 0, fakeTweet.width, fakeTweet.height);
       g2.drawImage(trumpPic, 15, 15, null);
       g2.drawImage(trumpName, 105, 15, null);
+      g2.drawImage(replies, 30, 100, null);
+      g2.drawImage(retweet, 60, 100, null);
+      g2.drawImage(likes, 90, 100, null);
+      
       g2.setPaint(Color.black);
       g2.setFont(new Font("Helvetica Neue", Font.BOLD, 30));
       g2.drawString(fakeTweet.text, 105, 65);
+      
+      
       g2.setFont(new Font("Helvetica", Font.PLAIN, 13));
       g2.setColor(Color.GRAY);
       g2.drawString(fakeTweet.date, 360, 30);
+      g2.drawString(fakeTweet.date, 360, 30);
+      g2.drawString(fakeTweet.stringReply, 70, 115);
+      g2.drawString(fakeTweet.stringRetweet, 170, 115);
+      g2.drawString(fakeTweet.stringLikes, 260, 115);
+      
       g2.dispose();
       try {
         ImageIO.write(imageTweet, "png", new File("BigTweet.png"));

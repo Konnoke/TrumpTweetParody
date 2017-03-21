@@ -34,17 +34,21 @@ import javax.swing.table.DefaultTableModel;
  */
 public class Dashboard extends JFrame {
 
-  private static final int FRAME_WIDTH = 900;
+  private static final int FRAME_WIDTH = 1000;
   private static final int FRAME_HEIGHT = 500;
-  public void Dashboard() {
+  static final Tweet fakeTweet = new Tweet();
+  static final JFrame frame = new JFrame();
+  static final JPanel buttonPanel = new JPanel();
+
+  public static void Dashboard() {
     //initComponents();
   }
 
   public static void initComponents() {
-    
+    /*
     final Tweet fakeTweet = new Tweet();
     final JFrame frame = new JFrame();
-    final JPanel buttonPanel = new JPanel();
+    final JPanel buttonPanel = new JPanel(); */
     frame.add(buttonPanel);
     buttonPanel.setLayout(null);
 
@@ -61,7 +65,6 @@ public class Dashboard extends JFrame {
     final JButton buttonExit = new JButton("Exit");
     buttonExit.setBounds(200, 425, 100, 20);
     buttonPanel.add(buttonExit);
-    
 
     // Set up Labels for Tweet text, date, and pay rate
     final JLabel labelTweetText = new JLabel("Enter Tweet Text: ");
@@ -79,13 +82,12 @@ public class Dashboard extends JFrame {
     final JLabel labelRetweet = new JLabel("Enter number of retweets");
     labelRetweet.setBounds(20, 165, 150, 100);
     buttonPanel.add(labelRetweet);
-    
+
     final JLabel labelReply = new JLabel("Enter number of replies");
     labelReply.setBounds(20, 215, 150, 100);
     buttonPanel.add(labelReply);
-  //*/  
-    
-    
+    //*/  
+
     // Set up textboxes for all expected inputs
     final JTextField textTweetText = new JTextField();
     textTweetText.setBounds(180, 40, 100, 25);
@@ -95,24 +97,25 @@ public class Dashboard extends JFrame {
     textDate.setBounds(180, 95, 100, 25);
     buttonPanel.add(textDate);
 
-    final JTextField textLike = new JTextField();
+    final JTextField textLike = new JTextField("0");
     textLike.setBounds(180, 150, 100, 25);
     buttonPanel.add(textLike);
 
-    final JTextField textRetweet = new JTextField();
+    final JTextField textRetweet = new JTextField("0");
     textRetweet.setBounds(180, 205, 100, 25);
     buttonPanel.add(textRetweet);
-    
-    final JTextField textReply = new JTextField();
+
+    final JTextField textReply = new JTextField("0");
     textReply.setBounds(180, 260, 100, 25);
     buttonPanel.add(textReply);
-    
+
     JRadioButton normalTweetButton = new JRadioButton("Normal Size Tweet");
     normalTweetButton.setMnemonic(KeyEvent.VK_C);
     //normalTweetButton.setActionCommand("Normal Size Tweet");
     normalTweetButton.setBounds(15, 300, 200, 25);
+    normalTweetButton.setSelected(true);
     buttonPanel.add(normalTweetButton);
-    
+
     JRadioButton bigTweetButton = new JRadioButton("Big Size Tweet");
     bigTweetButton.setMnemonic(KeyEvent.VK_C);
     //bigTweetButton.setActionCommand("Big Size Tweet");
@@ -123,45 +126,56 @@ public class Dashboard extends JFrame {
     group.add(normalTweetButton);
     group.add(bigTweetButton);
     //*/
-    
-    
-    normalTweetButton.addActionListener(new ActionListener(){
+
+    normalTweetButton.addActionListener(new ActionListener() {
       @Override
-      public void actionPerformed(ActionEvent e){
+      public void actionPerformed(ActionEvent e) {
         fakeTweet.setNormalTweet();
         System.out.println(fakeTweet.getType());
       }
     });
-    
-    bigTweetButton.addActionListener(new ActionListener(){
+
+    bigTweetButton.addActionListener(new ActionListener() {
       @Override
-      public void actionPerformed(ActionEvent e){
+      public void actionPerformed(ActionEvent e) {
         fakeTweet.setBigTweet();
         System.out.println(fakeTweet.getType());
       }
     });
-    
+
     buttonGenerate.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
-        fakeTweet.setNormalTweet();
+        //fakeTweet.setNormalTweet();
         ///*
         fakeTweet.setText(textTweetText.getText());
         fakeTweet.setDate(textDate.getText());
-        //fakeTweet.setLikes(Integer.parseInt(textLike.getText()));
-        //fakeTweet.setRetweet(Integer.parseInt(textRetweet.getText()));
-        //fakeTweet.setReplies(Integer.parseInt(textReply.getText()));
+        fakeTweet.setLikes(Integer.parseInt(textLike.getText()));
+        fakeTweet.setRetweet(Integer.parseInt(textRetweet.getText()));
+        fakeTweet.setReplies(Integer.parseInt(textReply.getText()));
         //*/
         tweetGenerator Bing = new tweetGenerator(fakeTweet);
         Bing.generateImage();
-        ///*
+        //getImagePreview();
+
+        /*
+        
         BufferedImage displayTweet = Bing.getImage();
         ImageIcon image = new ImageIcon(displayTweet);
         JLabel tweetPreview = new JLabel(image);
         tweetPreview.setBounds(400, 20, fakeTweet.getWidth(), fakeTweet.getHeight());
+        tweetPreview.setVisible(true);
         buttonPanel.add(tweetPreview);
-        //*/      
-    }
+         //*/
+        /*
+        ImageIcon tweetPreview = new ImageIcon("Tweet.png");
+        JLabel tweetImagePreview = new JLabel(tweetPreview);
+        tweetImagePreview.setBounds(300, 10, 640, 400);
+        tweetImagePreview.setVisible(true);
+        buttonPanel.add(tweetImagePreview);
+
+        //*/
+      }
     });
 
     buttonExit.addActionListener(new ActionListener() {
@@ -171,17 +185,30 @@ public class Dashboard extends JFrame {
         System.exit(0);
       }
     });
-    
+
     frame.setSize(FRAME_WIDTH, FRAME_HEIGHT);
     frame.setTitle("Dashboard");
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     frame.setVisible(true);
     frame.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
     frame.setLocationRelativeTo(null);
+    ///*
+    ImageIcon tweetPreview = new ImageIcon("Tweet.png");
+    JLabel tweetImagePreview = new JLabel(tweetPreview);
+    tweetImagePreview.setBounds(300, 10, 640, 400);
+    tweetImagePreview.setVisible(true);
+    buttonPanel.add(tweetImagePreview);
+    //*///
 
   }
-  
-  
-  
+
+  public static void getImagePreview() {
+    ImageIcon tweetPreview = new ImageIcon("Tweet.png");
+    JLabel tweetImagePreview = new JLabel(tweetPreview);
+    tweetImagePreview.setBounds(300, 10, 640, 400);
+    tweetImagePreview.setVisible(true);
+    buttonPanel.add(tweetImagePreview);
+
+  }
 
 }

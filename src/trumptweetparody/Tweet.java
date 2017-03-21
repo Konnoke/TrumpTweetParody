@@ -5,6 +5,8 @@
  */
 package trumptweetparody;
 
+import java.text.DecimalFormat;
+
 /**
  *
  * @author Zarathustra aka Kevin aka Konnoke
@@ -13,12 +15,13 @@ public class Tweet {
   
 
   int width, height, likes, replies, retweet, type;
-  String text, date;
+  String text, date, stringLikes, stringReply, stringRetweet;
   final int bigWidth = 640;
   final int bigHeight = 275;
   final int normalWidth = 600;
   final int normalHeight = 135;
 
+  
   public void setNormalTweet() {
     width = normalWidth;
     height = normalHeight;
@@ -58,6 +61,18 @@ public class Tweet {
   public void setDate(String date) {
     this.date = date;
   }
+  
+  public void setStringLike(){
+    this.stringLikes = formatNumberExample(likes);
+  }
+  
+  public void setStringReply(){
+    this.stringReply = formatNumberExample(replies);
+  }
+  
+  public void setStringRetweet(){
+    this.stringRetweet = formatNumberExample(retweet);
+  }
 
   public int getWidth() {
     return width;
@@ -90,5 +105,32 @@ public class Tweet {
   public int getType(){
     return type;
   }
+  
+  public String getStringLike(){
+    return stringLikes;
+  }
+  
+  public String getStringReply(){
+    return stringReply;
+  }
+  
+  public String getStringRetweet(){
+    return stringRetweet;
+  }
+  
+  
+  
+  public String formatNumberExample(Number number) {
+    char[] suffix = {' ', 'k', 'M', 'B', 'T', 'P', 'E'};
+    Double numValue = number.doubleValue();
+    int value = (int) Math.floor(Math.log10(numValue));
+    int base = value / 3;
+    if (value >= 3 && base < suffix.length) {
+      return new DecimalFormat("#0.0").format(numValue / Math.pow(10, base * 3)) + suffix[base];
+    } else {
+      return new DecimalFormat("#,##0").format(numValue);
+    }
+  }
+  
 
 }
