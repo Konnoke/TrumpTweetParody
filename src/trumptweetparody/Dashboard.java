@@ -192,7 +192,7 @@ public class Dashboard extends JFrame {
     frame.setVisible(true);
     frame.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
     frame.setLocationRelativeTo(null);
-    ///*
+    /*
     ImageIcon tweetPreview = new ImageIcon("Tweet.png");
     JLabel tweetImagePreview = new JLabel(tweetPreview);
     tweetImagePreview.setBounds(300, 10, 640, 400);
