@@ -5,6 +5,8 @@
  */
 package trumptweetparody;
 
+import java.awt.BorderLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -18,6 +20,7 @@ import java.util.Random;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -39,7 +42,10 @@ public class Dashboard extends JFrame {
   static final Tweet fakeTweet = new Tweet();
   static final JFrame frame = new JFrame();
   static final JPanel buttonPanel = new JPanel();
-
+  static ImageIcon tweetPreview;
+  static JLabel tweetImagePreview;
+  static JFileChooser fc;
+  
   public static void Dashboard() {
     //initComponents();
   }
@@ -54,16 +60,16 @@ public class Dashboard extends JFrame {
 
     // Set up Add button and its location
     final JButton buttonAdd = new JButton(" Add ");
-    buttonAdd.setBounds(50, 425, 100, 20);
-    buttonPanel.add(buttonAdd);
+    buttonAdd.setBounds(20, 425, 100, 20);
+    buttonPanel.add(buttonAdd);//, BorderLayout.SOUTH);
     ///* Set up Generate Tweet Button
     final JButton buttonGenerate = new JButton("Generate Tweet");
-    buttonGenerate.setBounds(40, 385, 200, 20);
+    buttonGenerate.setBounds(20, 385, 260, 30);
     buttonPanel.add(buttonGenerate);
 
     // Set up Exit button and its location
     final JButton buttonExit = new JButton("Exit");
-    buttonExit.setBounds(200, 425, 100, 20);
+    buttonExit.setBounds(180, 425, 100, 20);
     buttonPanel.add(buttonExit);
 
     // Set up Labels for Tweet text, date, and pay rate
@@ -76,7 +82,7 @@ public class Dashboard extends JFrame {
     buttonPanel.add(labelDate);
 
     final JLabel labelLike = new JLabel("Enter number of likes");
-    labelLike.setBounds(20, 115, 150, 100);
+    labelLike.setBounds(20, 215, 150, 100);
     buttonPanel.add(labelLike);
 ///*
     final JLabel labelRetweet = new JLabel("Enter number of retweets");
@@ -84,7 +90,7 @@ public class Dashboard extends JFrame {
     buttonPanel.add(labelRetweet);
 
     final JLabel labelReply = new JLabel("Enter number of replies");
-    labelReply.setBounds(20, 215, 150, 100);
+    labelReply.setBounds(20, 115, 150, 100);
     buttonPanel.add(labelReply);
     //*/  
 
@@ -142,6 +148,17 @@ public class Dashboard extends JFrame {
         System.out.println(fakeTweet.getType());
       }
     });
+    
+  buttonAdd.addActionListener(new ActionListener(){
+    @Override
+      public void actionPerformed(ActionEvent d){
+        //final JFileChooser fc = new JFileChooser();
+        fc = new JFileChooser();
+        int returnVal = fc.showOpenDialog(fc);
+    }
+  });  
+    
+  
 
     buttonGenerate.addActionListener(new ActionListener() {
       @Override
@@ -166,14 +183,26 @@ public class Dashboard extends JFrame {
         tweetPreview.setBounds(400, 20, fakeTweet.getWidth(), fakeTweet.getHeight());
         tweetPreview.setVisible(true);
         buttonPanel.add(tweetPreview);
+        //frame.setVisible(true);
          //*/
+         
         /*
         ImageIcon tweetPreview = new ImageIcon("Tweet.png");
         JLabel tweetImagePreview = new JLabel(tweetPreview);
         tweetImagePreview.setBounds(300, 10, 640, 400);
         tweetImagePreview.setVisible(true);
         buttonPanel.add(tweetImagePreview);
-
+        frame.add(tweetImagePreview);
+        buttonPanel.setVisible(true);
+        frame.setVisible(true);
+        //*/
+        
+        try{
+          tweetImagePreview.setIcon(Bing.getImage());//new ImageIcon("Tweet.png"));
+        } catch(NullPointerException f){
+          
+        }
+        
         //*/
       }
     });
@@ -189,13 +218,15 @@ public class Dashboard extends JFrame {
     frame.setSize(FRAME_WIDTH, FRAME_HEIGHT);
     frame.setTitle("Dashboard");
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    frame.setVisible(true);
     frame.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
     frame.setLocationRelativeTo(null);
-    /*
+    frame.setVisible(true);
+    
+    ///*
     ImageIcon tweetPreview = new ImageIcon("Tweet.png");
     JLabel tweetImagePreview = new JLabel(tweetPreview);
     tweetImagePreview.setBounds(300, 10, 640, 400);
+    
     tweetImagePreview.setVisible(true);
     buttonPanel.add(tweetImagePreview);
     //*///
@@ -203,12 +234,14 @@ public class Dashboard extends JFrame {
   }
 
   public static void getImagePreview() {
+    /*
     ImageIcon tweetPreview = new ImageIcon("Tweet.png");
     JLabel tweetImagePreview = new JLabel(tweetPreview);
     tweetImagePreview.setBounds(300, 10, 640, 400);
     tweetImagePreview.setVisible(true);
     buttonPanel.add(tweetImagePreview);
-
+    */
+    
   }
 
 }

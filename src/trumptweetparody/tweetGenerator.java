@@ -27,12 +27,12 @@ import javax.swing.JLabel;
 public class tweetGenerator {
 
   //String tweetText = "";
-  BufferedImage imageTweet;
+  static BufferedImage imageTweet;
   static Tweet fakeTweet;
 
   public tweetGenerator(Tweet sprint2) {
     fakeTweet = sprint2;
-    System.out.println("Constructor: "+fakeTweet.getType());
+    //System.out.println("Constructor: "+fakeTweet.getType());
   }
 
   public static String formatNumberExample(Number number) {
@@ -187,9 +187,9 @@ public class tweetGenerator {
     f.setVisible(true);
   }
 
-  public BufferedImage getImage() {
-
-    return imageTweet;
+  public ImageIcon getImage() {
+    ImageIcon previewImage = new ImageIcon(imageTweet);
+    return previewImage;
   }
 
 }
