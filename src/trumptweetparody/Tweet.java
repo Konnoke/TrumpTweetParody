@@ -17,7 +17,7 @@ public class Tweet {
   int width, height, likes, replies, retweet, type;
   String text, date, stringLikes, stringReply, stringRetweet;
   final int bigWidth = 640;
-  final int bigHeight = 275;
+  final int bigHeight = 575;
   final int normalWidth = 600;
   final int normalHeight = 135;
 

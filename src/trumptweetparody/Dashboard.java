@@ -16,7 +16,11 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -29,6 +33,7 @@ import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -45,7 +50,8 @@ public class Dashboard extends JFrame {
   static ImageIcon tweetPreview;
   static JLabel tweetImagePreview;
   static JFileChooser fc;
-  
+  static BufferedImage pic = null;
+
   public static void Dashboard() {
     //initComponents();
   }
@@ -122,7 +128,7 @@ public class Dashboard extends JFrame {
     normalTweetButton.setSelected(true);
     buttonPanel.add(normalTweetButton);
 
-    JRadioButton bigTweetButton = new JRadioButton("Big Size Tweet");
+    JRadioButton bigTweetButton = new JRadioButton("Picture Tweet.");
     bigTweetButton.setMnemonic(KeyEvent.VK_C);
     //bigTweetButton.setActionCommand("Big Size Tweet");
     bigTweetButton.setBounds(15, 325, 200, 25);
@@ -148,17 +154,27 @@ public class Dashboard extends JFrame {
         System.out.println(fakeTweet.getType());
       }
     });
-    
-  buttonAdd.addActionListener(new ActionListener(){
-    @Override
-      public void actionPerformed(ActionEvent d){
+
+    buttonAdd.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent d) {
         //final JFileChooser fc = new JFileChooser();
         fc = new JFileChooser();
-        int returnVal = fc.showOpenDialog(fc);
-    }
-  });  
-    
-  
+        fc.setDialogTitle("Please chhose an image for the picture tweet");
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("JPEG", "jpeg", "jpg", "png", "bmp", "gif");
+        fc.addChoosableFileFilter(filter);
+        //int returnVal = fc.showOpenDialog(fc);
+        if (fc.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+          File selectedFile = fc.getSelectedFile();
+          try {
+            pic = ImageIO.read(selectedFile);
+          } catch (IOException ex) {
+            ex.printStackTrace();
+          }
+        }
+
+      }
+    });
 
     buttonGenerate.addActionListener(new ActionListener() {
       @Override
@@ -172,7 +188,13 @@ public class Dashboard extends JFrame {
         fakeTweet.setReplies(Integer.parseInt(textReply.getText()));
         //*/
         tweetGenerator Bing = new tweetGenerator(fakeTweet);
-        Bing.generateImage();
+        Bing.setPic(pic);
+        try {
+          Bing.generateImage();
+        } catch (IOException ex) {
+          Logger.getLogger(Dashboard.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
         //getImagePreview();
 
         /*
@@ -185,8 +207,7 @@ public class Dashboard extends JFrame {
         buttonPanel.add(tweetPreview);
         //frame.setVisible(true);
          //*/
-         
-        /*
+ /*
         ImageIcon tweetPreview = new ImageIcon("Tweet.png");
         JLabel tweetImagePreview = new JLabel(tweetPreview);
         tweetImagePreview.setBounds(300, 10, 640, 400);
@@ -196,11 +217,19 @@ public class Dashboard extends JFrame {
         buttonPanel.setVisible(true);
         frame.setVisible(true);
         //*/
-        
-        try{
-          tweetImagePreview.setIcon(Bing.getImage());//new ImageIcon("Tweet.png"));
-        } catch(NullPointerException f){
-          
+ /*
+        try {
+          if (fakeTweet.getType() == 1) {
+            tweetPreview = new ImageIcon("PictureTweet.png");
+            JLabel tweetImagePreview = new JLabel(tweetPreview);
+            tweetImagePreview.setBounds(300, 10, 640, 575);
+            
+            tweetImagePreview.setVisible(true);
+            buttonPanel.add(tweetImagePreview);
+          }else
+            tweetImagePreview.setIcon(Bing.getImage());//new ImageIcon("Tweet.png"));
+        } catch (NullPointerException f) {
+
         }
         
         //*/
@@ -221,12 +250,12 @@ public class Dashboard extends JFrame {
     frame.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
-    
+
     ///*
-    ImageIcon tweetPreview = new ImageIcon("Tweet.png");
+    tweetPreview = new ImageIcon("Tweet.png");
     JLabel tweetImagePreview = new JLabel(tweetPreview);
-    tweetImagePreview.setBounds(300, 10, 640, 400);
-    
+    tweetImagePreview.setBounds(300, 10, 640, 300);
+
     tweetImagePreview.setVisible(true);
     buttonPanel.add(tweetImagePreview);
     //*///
@@ -240,8 +269,8 @@ public class Dashboard extends JFrame {
     tweetImagePreview.setBounds(300, 10, 640, 400);
     tweetImagePreview.setVisible(true);
     buttonPanel.add(tweetImagePreview);
-    */
-    
+     */
+
   }
 
 }
