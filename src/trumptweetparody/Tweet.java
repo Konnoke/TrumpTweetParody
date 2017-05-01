@@ -27,7 +27,7 @@ public class Tweet {
     height = normalHeight;
     type = 0;
   }
-
+  //Big tweet has been changed to picture tweet
   public void setBigTweet() {
     width = bigWidth;
     height = bigHeight;
@@ -119,7 +119,7 @@ public class Tweet {
   }
   
   
-  
+  //Function where it shortens the int. Example: 32,212 to 32.2k
   public String formatNumberExample(Number number) {
     char[] suffix = {' ', 'k', 'M', 'B', 'T', 'P', 'E'};
     Double numValue = number.doubleValue();
